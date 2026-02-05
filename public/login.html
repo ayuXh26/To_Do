@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - To-Do</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <div class="main-div">
+      <div class="login-container">
+        <div class="login-header">
+          <h1>Welcome Back</h1>
+          <p class="subtitle">Sign in to continue to your To-Do list</p>
+        </div>
+
+        <form class="login-form" id="emailForm">
+          <div class="form-group">
+            <label for="email">Email or Username</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person"></i>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="Enter your email or username"
+                required
+                autocomplete="username"
+              />
+            </div>
+          </div>
+
+          <div class="form-group" id="passwordForm">
+            <label for="password">Password</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-lock"></i>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+              />
+            </div>
+          </div>
+
+          <div class="forgot-password">
+            <a
+              href="#"
+              onclick="
+                alert('Forgot password functionality coming soon!');
+                return false;
+              "
+            >
+              Forgot password?
+            </a>
+          </div>
+
+          <button type="submit" id="login-button">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Login
+          </button>
+        </form>
+
+        <div class="signup-link">
+          <p>Don't have an account?</p>
+          <a href="#" id="create-account-link">
+            Create an account
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="signup-modal">
+      <div class="signup-modal-content">
+        <div class="signup-modal-header">
+          <h2>Create Account</h2>
+          <button class="close-modal" id="close-signup-modal">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <form class="signup-form" id="signupForm">
+          <div class="form-group">
+            <label for="signup-firstname">First Name</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person"></i>
+              <input
+                type="text"
+                id="signup-firstname"
+                name="firstName"
+                placeholder="Enter your first name"
+                required
+                autocomplete="given-name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-lastname">Last Name</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person-fill"></i>
+              <input
+                type="text"
+                id="signup-lastname"
+                name="lastName"
+                placeholder="Enter your last name"
+                autocomplete="family-name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-envelope"></i>
+              <input
+                type="email"
+                id="signup-email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-lock"></i>
+              <input
+                type="password"
+                id="signup-password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-confirm-password">Confirm Password</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-lock-fill"></i>
+              <input
+                type="password"
+                id="signup-confirm-password"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+
+          <button type="submit" id="signup-submit-button">
+            <i class="bi bi-person-plus"></i>
+            Sign Up
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="login.js"></script>
+  </body>
+</html>

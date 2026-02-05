@@ -1,0 +1,1084 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0a0a;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(74, 158, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 158, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.main-div {
+    width: 100%;
+    min-height: 100vh;
+    background: #1a1a1a;
+    border-radius: 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.02);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    overflow: hidden;
+    border: none;
+    border-left: 1px solid #2a2a2a;
+    border-right: 1px solid #2a2a2a;
+    animation: fadeInUp 0.6s ease-out;
+    z-index: 1;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    position: relative;
+}
+
+.app-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    animation: fadeIn 0.8s ease-out;
+    position: relative;
+    display: inline-block;
+}
+
+.app-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+    border-radius: 2px;
+    animation: expandLine 1s ease-out 0.5s both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes expandLine {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 60px;
+        opacity: 1;
+    }
+}
+
+.app-header .subtitle {
+    color: #888888;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid #ef4444 !important;
+    color: #ef4444 !important;
+    background: transparent !important;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    font-size: 0.9rem;
+    z-index: 10;
+}
+
+.logout-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.logout-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.logout-button:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border-color: #ef4444 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+
+.logout-button:active {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border-color: #ef4444 !important;
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.2);
+}
+
+.logout-button i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.logout-button:hover i {
+    transform: translateX(2px) scale(1.1);
+}
+
+.container-fluid {
+    width: 100%;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.task-form {
+    width: 100%;
+    gap: 12px;
+}
+
+.task-form #task_input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #252525;
+    color: #ffffff;
+    position: relative;
+}
+
+.task-form #task_input:focus {
+    outline: none;
+    border-color: #4a9eff;
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1), 0 0 20px rgba(74, 158, 255, 0.05);
+    background: #2a2a2a;
+    transform: translateY(-1px);
+}
+
+.task-form #task_input::placeholder {
+    transition: opacity 0.3s ease;
+}
+
+.task-form #task_input:focus::placeholder {
+    opacity: 0.5;
+}
+
+.task-form #task_input::placeholder {
+    color: #666666;
+}
+
+.task-form #add-button {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid #4a9eff;
+    color: #4a9eff;
+    background: transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-form #add-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(74, 158, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.task-form #add-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.task-form #add-button:hover {
+    background: #4a9eff;
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.3);
+}
+
+.task-form #add-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(74, 158, 255, 0.2);
+}
+
+.task-form #add-button i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.task-form #add-button:hover i {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.task-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    max-height: 400px;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.task-list-wrapper:empty::after {
+    content: 'No tasks yet. Add one above! ✨';
+    display: block;
+    text-align: center;
+    color: #666666;
+    padding: 40px 20px;
+    font-size: 0.95rem;
+    animation: fadeIn 0.6s ease-out;
+    font-style: italic;
+}
+
+.task-list-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-list-wrapper::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.task-list-wrapper::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 10px;
+}
+
+.task-list-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+.task-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    background: #252525;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #333333;
+    width: 100%;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+    animation: slideIn 0.4s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: #4a9eff;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+}
+
+.task-container:hover::before {
+    transform: scaleY(1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.task-container:hover {
+    border-color: #444444;
+    background: #2a2a2a;
+    transform: translateX(4px);
+    box-shadow: -4px 0 12px rgba(74, 158, 255, 0.1);
+}
+
+.task-container.pending {
+    border-left: 3px solid #4a9eff;
+}
+
+.task-container.task-done {
+    opacity: 0.6;
+    border-left: 3px solid #4a9eff;
+}
+
+.task-container.task-done p {
+    text-decoration: line-through;
+    color: #666666;
+}
+
+.task-container p {
+    flex: 1;
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.task-container:hover p {
+    color: #ffffff;
+}
+
+.task-container .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-container .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.task-container .btn:hover::after {
+    width: 200px;
+    height: 200px;
+}
+
+.task-container .btn:hover {
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.task-container .btn:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+.task-container .btn i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.task-container .btn:hover i {
+    transform: scale(1.15);
+}
+
+.task-container .btn.up {
+    border-color: #555555;
+    color: #cccccc;
+    background: transparent;
+}
+
+.task-container .btn.up:hover {
+    background: #333333;
+    color: #ffffff;
+    border-color: #666666;
+}
+
+.task-container .btn.up:hover i {
+    transform: translateY(-2px) scale(1.15);
+}
+
+.task-container .btn.down {
+    border-color: #555555;
+    color: #cccccc;
+    background: transparent;
+}
+
+.task-container .btn.down:hover {
+    background: #333333;
+    color: #ffffff;
+    border-color: #666666;
+}
+
+.task-container .btn.down:hover i {
+    transform: translateY(2px) scale(1.15);
+}
+
+.task-container .btn.done {
+    border-color: #555555;
+    color: #cccccc;
+    background: transparent;
+}
+
+.task-container .btn.done:hover {
+    background: #10b981;
+    color: #ffffff;
+    border-color: #10b981;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.task-container .btn.done:hover i {
+    transform: rotate(360deg) scale(1.15);
+}
+
+.task-container .btn.edit {
+    border-color: #555555;
+    color: #cccccc;
+    background: transparent;
+}
+
+.task-container .btn.edit:hover {
+    background: #6b7280;
+    color: #ffffff;
+    border-color: #6b7280;
+    box-shadow: 0 4px 16px rgba(107, 114, 128, 0.3);
+}
+
+.task-container .btn.edit:hover i {
+    transform: rotate(15deg) scale(1.15);
+}
+
+/* Loading animation for tasks */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.task-container.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Smooth scroll behavior */
+.task-list-wrapper {
+    scroll-behavior: smooth;
+}
+
+/* Focus visible improvements */
+.task-form #task_input:focus-visible {
+    outline: 2px solid #4a9eff;
+    outline-offset: 2px;
+}
+
+.task-container .btn:focus-visible {
+    outline: 2px solid #4a9eff;
+    outline-offset: 2px;
+}
+
+/* Subtle glow effect on main container */
+.main-div::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.05), rgba(74, 158, 255, 0.02));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.main-div:hover::after {
+    opacity: 1;
+}
+
+/* Content container for better readability on large screens */
+.container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.task-list-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    body {
+        align-items: flex-start;
+    }
+
+    .main-div {
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .app-header h1 {
+        font-size: 2rem;
+    }
+
+    .app-header h1::after {
+        width: 40px;
+    }
+
+    .logout-button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        top: 10px;
+        right: 10px;
+    }
+
+    .task-form {
+        flex-direction: column;
+    }
+
+    .task-form #add-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .task-container {
+        flex-wrap: wrap;
+        padding: 16px;
+    }
+
+    .task-container:hover {
+        transform: translateX(2px);
+    }
+
+    .task-container .btn {
+        flex: 1;
+        min-width: 80px;
+        justify-content: center;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .task-container p {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+
+/* Login Page Styles */
+.login-container {
+    max-width: 450px;
+    width: 100%;
+    margin: auto;
+    padding: 40px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-form label {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.login-form input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #252525;
+    color: #ffffff;
+    width: 100%;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #4a9eff;
+    box-shadow:
+      0 0 0 3px rgba(74, 158, 255, 0.1),
+      0 0 20px rgba(74, 158, 255, 0.05);
+    background: #2a2a2a;
+    transform: translateY(-1px);
+}
+
+.login-form input::placeholder {
+    color: #666666;
+    transition: opacity 0.3s ease;
+}
+
+.login-form input:focus::placeholder {
+    opacity: 0.5;
+}
+
+.login-form #login-button {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid #4a9eff;
+    color: #4a9eff;
+    background: transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.login-form #login-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(74, 158, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.6s ease,
+      height 0.6s ease;
+}
+
+.login-form #login-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.login-form #login-button:hover {
+    background: #4a9eff;
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.3);
+}
+
+.login-form #login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(74, 158, 255, 0.2);
+}
+
+.login-form #login-button i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.login-form #login-button:hover i {
+    transform: scale(1.1);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    animation: fadeIn 0.8s ease-out;
+    position: relative;
+    display: inline-block;
+}
+
+.login-header h1::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+    border-radius: 2px;
+    animation: expandLine 1s ease-out 0.5s both;
+}
+
+.login-header .subtitle {
+    color: #888888;
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-top: 12px;
+}
+
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper i {
+    position: absolute;
+    left: 16px;
+    color: #666666;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.input-icon-wrapper input {
+    padding-left: 48px;
+}
+
+.input-icon-wrapper:focus-within i {
+    color: #4a9eff;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: -8px;
+}
+
+.forgot-password a {
+    color: #4a9eff;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.forgot-password a:hover {
+    color: #6bb4ff;
+    text-decoration: underline;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #333333;
+}
+
+.signup-link p {
+    color: #888888;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.signup-link a {
+    color: #4a9eff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: #6bb4ff;
+    text-decoration: underline;
+}
+
+/* Signup Modal Styles */
+.signup-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.signup-modal.active {
+    display: flex;
+}
+
+.signup-modal-content {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.02);
+    border: 1px solid #2a2a2a;
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.signup-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333333;
+}
+
+.signup-modal-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.close-modal {
+    background: transparent;
+    border: 1px solid #333333;
+    color: #888888;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.close-modal:hover {
+    background: #2a2a2a;
+    border-color: #444444;
+    color: #ffffff;
+    transform: rotate(90deg);
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.signup-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.signup-form label {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.signup-form input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #252525;
+    color: #ffffff;
+    width: 100%;
+}
+
+.signup-form .input-icon-wrapper input {
+    padding-left: 48px;
+}
+
+.signup-form input:focus {
+    outline: none;
+    border-color: #4a9eff;
+    box-shadow:
+      0 0 0 3px rgba(74, 158, 255, 0.1),
+      0 0 20px rgba(74, 158, 255, 0.05);
+    background: #2a2a2a;
+    transform: translateY(-1px);
+}
+
+.signup-form input::placeholder {
+    color: #666666;
+    transition: opacity 0.3s ease;
+}
+
+.signup-form input:focus::placeholder {
+    opacity: 0.5;
+}
+
+.signup-form #signup-submit-button {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid #4a9eff;
+    color: #4a9eff;
+    background: transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.signup-form #signup-submit-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(74, 158, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.6s ease,
+      height 0.6s ease;
+}
+
+.signup-form #signup-submit-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.signup-form #signup-submit-button:hover {
+    background: #4a9eff;
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.3);
+}
+
+.signup-form #signup-submit-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(74, 158, 255, 0.2);
+}
+
+.signup-form #signup-submit-button i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.signup-form #signup-submit-button:hover i {
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+    }
+
+    .login-header h1 {
+        font-size: 2rem;
+    }
+
+    .login-header h1::after {
+        width: 40px;
+    }
+
+    .signup-modal-content {
+        padding: 30px 20px;
+        width: 95%;
+    }
+
+    .signup-modal-header h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,154 +1,138 @@
-const button = document.getElementById("add-button");
-const logout = document.getElementById("logout");
-
-// container in which the task will be added
-const task_list = document.getElementById("task_list");
-const input = document.getElementById("task_input");
-
+const login = document.getElementById("login-button");
+const mail = document.getElementById("email");
+const passwrd = document.getElementById("password");
 const url = "https://to-do-backend-7000.onrender.com";
 
-// let position = 0;
+const createAccountLink = document.getElementById("create-account-link");
+const signupModal = document.getElementById("signup-modal");
+const closeSignupModal = document.getElementById("close-signup-modal");
+const signupForm = document.getElementById("signupForm");
 
-/*
-    getting all the task added till now when the page refreshes
-*/
-const getAlltasks = async () => {
-  const response = await fetch(`${url}/task`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    console.error("Server error:", text);
-    return [];
-  }
-
-  const data = await response.json();
-  return data;
-};
-
-const refreshTask = async () => {
-  task_list.replaceChildren();
-
-  getAlltasks()
-    .then((result) => {
-      result.forEach((task) => {
-        const taskName = task.taskName;
-        const task_id = task._id;
-
-        const container = document.createElement("div");
-        container.id = task_id;
-        container.classList.add("task-container");
-
-        const text = document.createElement("p");
-        text.textContent = taskName;
-        text.style.fontSize = "18px";
-        text.style.marginTop = "10px";
-
-        const done = document.createElement("button");
-        done.type = "button";
-        done.className = "done btn btn-outline-success";
-        done.innerHTML = `<i class="bi bi-check-circle"></i> Done`;
-
-        const edit = document.createElement("button");
-        edit.type = "button";
-        edit.className = "edit btn btn-outline-secondary";
-        edit.innerHTML = `<i class="bi bi-pencil"></i> Edit`;
-
-        container.appendChild(text);
-        container.appendChild(done);
-        container.appendChild(edit);
-
-        task_list.appendChild(container);
-      });
-    })
-    .then(() => {
-      const deleteButton = document.querySelectorAll(".done");
-      deleteButton.forEach((button) => {
-        button.addEventListener("click", async (e) => {
-          e.preventDefault();
-
-          const taskId = e.target.closest("div").id;
-          await fetch(`${url}/todo/delete/${taskId}`, {
-            method: "DELETE",
-            headers: {
-              "content-type": "application/json",
-            },
-            credentials: "include",
-          });
-
-          refreshTask();
-        });
-      });
-
-      const editButton = document.querySelectorAll(".edit");
-      editButton.forEach((button) => {
-        button.addEventListener("click", async (e) => {
-          e.preventDefault();
-
-          const userInput = prompt("Enter the new task details:");
-          if (userInput) {
-            const taskId = e.target.closest("div").id;
-            await fetch(`${url}/todo/edit/${taskId}`, {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({ userInput }),
-            });
-
-            refreshTask();
-          }
-        });
-      });
-    });
-};
-
-/*
-    to prevent the task from disappearing when refresh button is clicked
-*/
-window.addEventListener("DOMContentLoaded", refreshTask);
-
-/*
-    adding the task to the task_list div when the user click to Add button
-*/
-button.addEventListener("click", async (e) => {
+createAccountLink.addEventListener("click", (e) => {
   e.preventDefault();
-
-  const taskName = input.value.trim();
-  if (!taskName) return;
-
-  await fetch(`${url}/create-task`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ taskName }),
-  });
-
-  refreshTask();
-  input.value = "";
+  signupModal.classList.add("active");
 });
 
-logout.addEventListener("click", async (e) => {
+closeSignupModal.addEventListener("click", () => {
+  signupModal.classList.remove("active");
+});
+
+signupModal.addEventListener("click", (e) => {
+  if (e.target === signupModal) {
+    signupModal.classList.remove("active");
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && signupModal.classList.contains("active")) {
+    signupModal.classList.remove("active");
+  }
+});
+
+signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const logout = await fetch(`${url}/logout`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const firstName = document.getElementById("signup-firstname").value.trim();
+  const lastName = document.getElementById("signup-lastname").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
+  const confirmPassword = document.getElementById(
+    "signup-confirm-password",
+  ).value;
 
-  if (!logout.ok) {
-    const errData = await logout.json();
-    alert(errData.message || errData.error || "Login failed");
+  if (!firstName || !email || !password) {
+    alert("First name, email, and password are required");
     return;
   }
 
-  window.location.href = "login.html";
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  try {
+    const signupResponse = await fetch(`${url}/signup/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ firstName, lastName, email, password }),
+    });
+
+    if (!signupResponse.ok) {
+      const errData = await signupResponse.json();
+      alert(errData.message || errData.error || "Signup failed");
+      return;
+    }
+
+    const data = await signupResponse.json();
+    alert(data.message || "Account created successfully! Please login.");
+
+    // Close modal and clear form
+    signupModal.classList.remove("active");
+    signupForm.reset();
+  } catch (err) {
+    console.error("Signup error:", err);
+    alert("Something went wrong. Try again.");
+  }
+});
+
+login.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const email = mail.value.trim();
+  const password = passwrd.value;
+
+  if (!email || !password) {
+    alert("Email and password are required");
+    return;
+  }
+
+  try {
+    /*
+        1. user credentials sent and is authenticated and token is coming 
+    */
+    const loginresponse = await fetch(`${url}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    if (!loginresponse.ok) {
+      const errData = await loginresponse.json();
+      alert(errData.message || errData.error || "Login failed");
+      return;
+    }
+
+    /*
+        2. now that we have received the token we will now call our profile api to verify the user and get the user
+    */
+
+    const profileresponse = await fetch(`${url}/profile`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!profileresponse.ok) {
+      alert("Authentication failed!!");
+      return;
+    }
+
+    const user = await profileresponse.json();
+    console.log("Logged in:", user);
+
+    /*
+        3. clear form and redirect
+    */
+
+    mail.value = "";
+    passwrd.value = "";
+    window.location.href = "dashboard.html";
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Something went wrong. Try again.");
+  }
 });

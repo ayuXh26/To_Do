@@ -5,6 +5,7 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("../config/database");
+const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
@@ -26,7 +27,7 @@ app.use("/", taskRoutes);
 connectDB()
   .then(() => {
     console.log("Task MongoDB Connected");
-    app.listen(3000, () => {
+    app.listen(PORT, () => {
       console.log("Server Listening on port 3000");
     });
   })

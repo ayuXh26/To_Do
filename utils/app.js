@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: "http://localhost:5500", // 👈 frontend origin EXACTLY
-    credentials: true, // 👈 REQUIRED for cookies
+    origin: "http://localhost:5500",
+    credentials: true,
   }),
 );
 app.use(cookieParser());

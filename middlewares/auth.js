@@ -11,7 +11,7 @@ const userAuth = async (req, res, next) => {
     }
 
     //then verify the token
-    const decodedToken = jwt.verify(token, "process.env.JWT_SECRET");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
     //now the decoded cookies holds the data which was sent earlier
     //in this case it is userid

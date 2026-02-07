@@ -1,7 +1,7 @@
 const login = document.getElementById("login-button");
 const mail = document.getElementById("email");
 const passwrd = document.getElementById("password");
-const url = "http://localhost:3000";
+const url = "https://to-do-backend-7000.onrender.com";
 
 const createAccountLink = document.getElementById("create-account-link");
 const signupModal = document.getElementById("signup-modal");

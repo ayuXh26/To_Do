@@ -5,7 +5,7 @@ const logout = document.getElementById("logout");
 const task_list = document.getElementById("task_list");
 const input = document.getElementById("task_input");
 
-const url = "http://localhost:3000";
+const url = "https://to-do-backend-7000.onrender.com";
 
 // let position = 0;
 

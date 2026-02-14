@@ -7,12 +7,25 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("../config/database");
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = (
+  process.env.FRONTEND_URL || "http://localhost:5500"
+).split(",");
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5500",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
+
 app.use(cookieParser());
 app.use(express.json());
 

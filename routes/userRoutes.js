@@ -121,70 +121,29 @@ router.post("/logout", async (req, res) => {
   }
 });
 
-// router.post("/forgot-password", async (req, res) => {
-//   try {
-//     const { email } = req.body;
-//     const user = await User.findOne({ email });
-
-//     if (!user) {
-//       console.log("Forgot Password: User not found for", email);
-//       return res.status(200).json({
-//         message: "If an account exists, a reset link has been sent.",
-//       });
-//     }
-
-//     const resetToken = crypto.randomBytes(32).toString("hex");
-//     user.resetPasswordToken = resetToken;
-//     user.resetPasswordExpires = Date.now() + 3600000;
-
-//     console.log("Saving user with token...");
-//     await user.save();
-//     console.log("User saved successfully.");
-
-//     const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
-
-//     // 2. Updated Mail Options for Nodemailer
-//     const mailOptions = {
-//       from: `"To-Do App" <${process.env.EMAIL_USER}>`,
-//       to: user.email,
-//       subject: "Password Reset Request",
-//       html: `
-//         <div style="font-family: Arial, sans-serif; color: #333;">
-//           <h2>Password Reset Request</h2>
-//           <p>You requested to reset your password. Please click the link below to set a new one:</p>
-//           <a href="${resetUrl}" style="padding: 10px 20px; background-color: #4a9eff; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
-//           <p>This link will expire in 1 hour.</p>
-//           <p>If you did not request this, please ignore this email.</p>
-//         </div>
-//       `,
-//     };
-
-//     const info = await transporter.sendMail(mailOptions);
-//     console.log("Email sent successfully:", info.messageId);
-
-//     res.status(200).json({ message: "Reset link sent to email." });
-//   } catch (err) {
-//     console.error("FORGOT PASSWORD ERROR:", err.message);
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// routes/userRoutes.js
-
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
 
     if (!user) {
-      // Always return a response even if user is not found for security
+      console.log("Forgot Password: User not found for", email);
       return res.status(200).json({
         message: "If an account exists, a reset link has been sent.",
       });
     }
 
-    // ... (token generation logic)
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000;
 
+    console.log("Saving user with token...");
+    await user.save();
+    console.log("User saved successfully.");
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
+
+    // 2. Updated Mail Options for Nodemailer
     const mailOptions = {
       from: `"To-Do App" <${process.env.EMAIL_USER}>`,
       to: user.email,
@@ -200,17 +159,13 @@ router.post("/forgot-password", async (req, res) => {
       `,
     };
 
-    // Use await to ensure the process completes or throws an error
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info.messageId);
 
-    // Explicitly send the success response AFTER the email is sent
-    return res.status(200).json({ message: "Reset link sent to email." });
+    res.status(200).json({ message: "Reset link sent to email." });
   } catch (err) {
     console.error("FORGOT PASSWORD ERROR:", err.message);
-    // Ensure an error response is sent so the request doesn't stay pending
-    return res
-      .status(500)
-      .json({ error: "Failed to send email. Please try again later." });
+    res.status(500).json({ error: err.message });
   }
 });
 

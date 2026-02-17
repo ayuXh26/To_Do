@@ -121,6 +121,8 @@ router.post("/logout", async (req, res) => {
   }
 });
 
+// routes/userRoutes.js
+
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -128,22 +130,25 @@ router.post("/forgot-password", async (req, res) => {
 
     if (!user) {
       console.log("Forgot Password: User not found for", email);
+      // Return 200 for security reasons so attackers can't guess emails
       return res.status(200).json({
         message: "If an account exists, a reset link has been sent.",
       });
     }
 
+    // 1. Generate and set the reset token
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiration
 
     console.log("Saving user with token...");
     await user.save();
     console.log("User saved successfully.");
 
+    // 2. Define the resetUrl BEFORE creating mailOptions
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
-    // 2. Updated Mail Options for Nodemailer
+    // 3. Configure the email
     const mailOptions = {
       from: `"To-Do App" <${process.env.EMAIL_USER}>`,
       to: user.email,
@@ -152,20 +157,25 @@ router.post("/forgot-password", async (req, res) => {
         <div style="font-family: Arial, sans-serif; color: #333;">
           <h2>Password Reset Request</h2>
           <p>You requested to reset your password. Please click the link below to set a new one:</p>
-          <a href="${resetUrl}" style="padding: 10px 20px; background-color: #4a9eff; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
+          <a href="${resetUrl}" style="padding: 10px 20px; background-color: #4a9eff; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a>
           <p>This link will expire in 1 hour.</p>
           <p>If you did not request this, please ignore this email.</p>
         </div>
       `,
     };
 
+    // 4. Send the email using await to ensure it completes
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent successfully:", info.messageId);
 
+    // 5. Send the success response back to the frontend
     res.status(200).json({ message: "Reset link sent to email." });
   } catch (err) {
     console.error("FORGOT PASSWORD ERROR:", err.message);
-    res.status(500).json({ error: err.message });
+    // If an error occurs, send a response so the request doesn't stay "pending"
+    res
+      .status(500)
+      .json({ error: "Failed to send email. Please try again later." });
   }
 });
 

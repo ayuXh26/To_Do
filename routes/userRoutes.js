@@ -10,8 +10,6 @@ const useCookies = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("../middlewares/auth");
 const crypto = require("crypto");
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
 const nodemailer = require("nodemailer");
 
 // 1. Create the transporter

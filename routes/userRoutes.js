@@ -11,7 +11,9 @@ const jwt = require("jsonwebtoken");
 const { userAuth } = require("../middlewares/auth");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const dns = require("dns");
 
+dns.setDefaultResultOrder("ipv4first");
 // 1. Create the transporter
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",

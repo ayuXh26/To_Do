@@ -14,11 +14,14 @@ const nodemailer = require("nodemailer");
 
 // 1. Create the transporter
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // must be true for 465
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // NOT your login password (see step 3)
+    pass: process.env.EMAIL_PASS, // must be Google App Password
   },
+  connectionTimeout: 10000, // 10 seconds
 });
 
 router.use(express.json());
@@ -163,6 +166,9 @@ router.post("/forgot-password", async (req, res) => {
         </div>
       `,
     };
+
+    await transporter.verify();
+    console.log("SMTP server is ready");
 
     // 4. Send the email using await to ensure it completes
     const info = await transporter.sendMail(mailOptions);

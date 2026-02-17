@@ -56,15 +56,7 @@
           </div>
 
           <div class="forgot-password">
-            <a
-              href="#"
-              onclick="
-                alert('Forgot password functionality coming soon!');
-                return false;
-              "
-            >
-              Forgot password?
-            </a>
+            <a href="#forgot-password-modal">Forgot password?</a>
           </div>
 
           <button type="submit" id="login-button">
@@ -77,6 +69,38 @@
           <p>Don't have an account?</p>
           <a href="#" id="create-account-link"> Create an account </a>
         </div>
+      </div>
+    </div>
+
+    <!-- Forgot Password Modal (shown via :target, no JS) -->
+    <div id="forgot-password-modal" class="forgot-password-modal">
+      <div class="forgot-password-modal-content">
+        <div class="forgot-password-modal-header">
+          <h2>Reset Password</h2>
+          <a href="#" class="close-modal" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </a>
+        </div>
+        <form class="forgot-password-form" action="reset-password.html" method="get">
+          <div class="form-group">
+            <label for="forgot-email">Email</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-envelope"></i>
+              <input
+                type="email"
+                id="forgot-email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+          <button type="submit">
+            <i class="bi bi-send"></i>
+            Submit
+          </button>
+        </form>
       </div>
     </div>
 

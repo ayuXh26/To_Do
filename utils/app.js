@@ -8,18 +8,26 @@ const connectDB = require("../config/database");
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = (
-  process.env.FRONTEND_URL || "http://localhost:5500"
+  process.env.FRONTEND_URL ||
+  "http://localhost:5500" ||
+  "http://localhost:3000"
 ).split(",");
 
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+      // Check if the origin is in our allowed list
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        origin.startsWith("http://localhost")
+      ) {
+        callback(null, true);
       } else {
-        return callback(new Error("Not allowed by CORS"));
+        console.log("Blocked by CORS:", origin); // Added for easier debugging
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
@@ -29,7 +37,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/", express.static(path.join(__dirname, "public")));
+app.use("/", express.static(path.join(__dirname, "../public")));
 
 const taskRoutes = require("../routes/taskRoutes");
 const userRoutes = require("../routes/userRoutes");

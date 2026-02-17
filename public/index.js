@@ -1,12 +1,16 @@
 const login = document.getElementById("login-button");
 const mail = document.getElementById("email");
 const passwrd = document.getElementById("password");
-const url = "https://to-do-backend-7000.onrender.com";
+// const url = "https://to-do-backend-7000.onrender.com";
+const url = "http://localhost:3000";
 
 const createAccountLink = document.getElementById("create-account-link");
 const signupModal = document.getElementById("signup-modal");
 const closeSignupModal = document.getElementById("close-signup-modal");
 const signupForm = document.getElementById("signupForm");
+
+const forgotPasswordForm = document.querySelector(".forgot-password-form");
+const forgotEmailInput = document.getElementById("forgot-email");
 
 createAccountLink.addEventListener("click", (e) => {
   e.preventDefault();
@@ -134,5 +138,36 @@ login.addEventListener("click", async (e) => {
   } catch (err) {
     console.error("Login error:", err);
     alert("Something went wrong. Try again.");
+  }
+});
+
+forgotPasswordForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = forgotEmailInput.value.trim();
+
+  try {
+    const response = await fetch(`${url}/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("A reset link has been sent to your email!");
+      // Optionally close the modal here
+      document
+        .getElementById("forgot-password-modal")
+        .classList.remove("active");
+    } else {
+      alert(data.error || "Something went wrong. Please try again.");
+    }
+  } catch (err) {
+    console.error("Forgot Password error:", err);
+    alert("Could not connect to the server.");
   }
 });

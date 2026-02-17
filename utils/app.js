@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("../config/database");
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = [process.env.FRONTEND_URL];
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5500"];
 
 app.use(
   cors({

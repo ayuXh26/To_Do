@@ -143,8 +143,7 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
     console.log("User saved successfully.");
 
-    // const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:5500"}/reset-password.html?token=${resetToken}`;
-    const resetUrl = `http://localhost:3000/reset-password.html?token=${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
     // 2. Updated Mail Options for Nodemailer
     const mailOptions = {

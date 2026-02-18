@@ -10,21 +10,8 @@ const useCookies = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("../middlewares/auth");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-const dns = require("dns");
-
-dns.setDefaultResultOrder("ipv4first");
-// 1. Create the transporter
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // must be true for 465
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // must be Google App Password
-  },
-  connectionTimeout: 10000, // 10 seconds
-});
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.use(express.json());
 router.use(useCookies());
@@ -126,64 +113,39 @@ router.post("/logout", async (req, res) => {
   }
 });
 
-// routes/userRoutes.js
-
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log("Forgot Password: User not found for", email);
-      // Return 200 for security reasons so attackers can't guess emails
       return res.status(200).json({
         message: "If an account exists, a reset link has been sent.",
       });
     }
 
-    // 1. Generate and set the reset token
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiration
+    user.resetPasswordExpires = Date.now() + 3600000;
 
-    console.log("Saving user with token...");
     await user.save();
-    console.log("User saved successfully.");
 
-    // 2. Define the resetUrl BEFORE creating mailOptions
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
 
-    // 3. Configure the email
-    const mailOptions = {
-      from: `"To-Do App" <${process.env.EMAIL_USER}>`,
+    await sgMail.send({
       to: user.email,
+      from: process.env.SENDGRID_VERIFIED_SENDER,
       subject: "Password Reset Request",
       html: `
-        <div style="font-family: Arial, sans-serif; color: #333;">
-          <h2>Password Reset Request</h2>
-          <p>You requested to reset your password. Please click the link below to set a new one:</p>
-          <a href="${resetUrl}" style="padding: 10px 20px; background-color: #4a9eff; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a>
-          <p>This link will expire in 1 hour.</p>
-          <p>If you did not request this, please ignore this email.</p>
-        </div>
+        <h2>Password Reset</h2>
+        <a href="${resetUrl}">Reset Password</a>
       `,
-    };
+    });
 
-    await transporter.verify();
-    console.log("SMTP server is ready");
-
-    // 4. Send the email using await to ensure it completes
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully:", info.messageId);
-
-    // 5. Send the success response back to the frontend
     res.status(200).json({ message: "Reset link sent to email." });
   } catch (err) {
     console.error("FORGOT PASSWORD ERROR:", err.message);
-    // If an error occurs, send a response so the request doesn't stay "pending"
-    res
-      .status(500)
-      .json({ error: "Failed to send email. Please try again later." });
+    res.status(500).json({ error: "Failed to send email." });
   }
 });
 

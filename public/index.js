@@ -72,7 +72,6 @@ signupForm.addEventListener("submit", async (e) => {
     const data = await signupResponse.json();
     alert(data.message || "Account created successfully! Please login.");
 
-    // Close modal and clear form
     signupModal.classList.remove("active");
     signupForm.reset();
   } catch (err) {
@@ -93,9 +92,6 @@ login.addEventListener("click", async (e) => {
   }
 
   try {
-    /*
-        1. user credentials sent and is authenticated and token is coming 
-    */
     const loginresponse = await fetch(`${url}/login`, {
       method: "POST",
       headers: {
@@ -110,10 +106,6 @@ login.addEventListener("click", async (e) => {
       return;
     }
 
-    /*
-        2. now that we have received the token we will now call our profile api to verify the user and get the user
-    */
-
     const profileresponse = await fetch(`${url}/profile`, {
       method: "GET",
       credentials: "include",
@@ -126,10 +118,6 @@ login.addEventListener("click", async (e) => {
 
     const user = await profileresponse.json();
     console.log("Logged in:", user);
-
-    /*
-        3. clear form and redirect
-    */
 
     mail.value = "";
     passwrd.value = "";
@@ -158,7 +146,6 @@ forgotPasswordForm.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       alert("A reset link has been sent to your email!");
-      // Optionally close the modal here
       document
         .getElementById("forgot-password-modal")
         .classList.remove("active");

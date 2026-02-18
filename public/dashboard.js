@@ -1,17 +1,11 @@
 const button = document.getElementById("add-button");
 const logout = document.getElementById("logout");
 
-// container in which the task will be added
 const task_list = document.getElementById("task_list");
 const input = document.getElementById("task_input");
 
 const url = "https://to-do-backend-7000.onrender.com";
 
-// let position = 0;
-
-/*
-    getting all the task added till now when the page refreshes
-*/
 const getAlltasks = async () => {
   const response = await fetch(`${url}/task`, {
     method: "GET",
@@ -106,14 +100,8 @@ const refreshTask = async () => {
     });
 };
 
-/*
-    to prevent the task from disappearing when refresh button is clicked
-*/
 window.addEventListener("DOMContentLoaded", refreshTask);
 
-/*
-    adding the task to the task_list div when the user click to Add button
-*/
 button.addEventListener("click", async (e) => {
   e.preventDefault();
 

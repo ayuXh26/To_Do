@@ -18,7 +18,6 @@ router.use(useCookies());
 
 router.post("/signup/user", async (req, res, next) => {
   try {
-    //Validation of Data
     validateSignUpData(req);
 
     const { firstName, lastName, email, password } = req.body;
@@ -28,9 +27,7 @@ router.post("/signup/user", async (req, res, next) => {
       throw new Error("User already exists");
     }
 
-    //Encrypt the password
     const hashPassword = await bcrypt.hash(password, 10);
-    // console.log(hashPassword);
 
     const user = new User({
       firstName,
@@ -49,8 +46,6 @@ router.post("/signup/user", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res) => {
-  // console.log("BODY:", req.body);
-
   try {
     validateLoginData(req);
     const { email, password } = req.body;
@@ -65,12 +60,10 @@ router.post("/login", async (req, res) => {
       const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
-      // console.log(token);
 
-      //adding the token to the cookie and sending it back to the user
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true, // Set to true only if using HTTPS
+        secure: true,
         sameSite: "none",
       });
       res.status(200).json({
@@ -135,11 +128,24 @@ router.post("/forgot-password", async (req, res) => {
     await sgMail.send({
       to: user.email,
       from: process.env.SENDGRID_VERIFIED_SENDER,
-      subject: "Password Reset Request",
+      subject: "Reset your To-Do App password",
+      text: `We received a request to reset your password.
+
+Reset your password using the link below:
+${resetUrl}
+
+This link will expire in 1 hour.
+
+If you did not request this, you can safely ignore this email.`,
       html: `
-        <h2>Password Reset</h2>
-        <a href="${resetUrl}">Reset Password</a>
-      `,
+    <p>Hello,</p>
+    <p>We received a request to reset your password for your <strong>To-Do App</strong> account.</p>
+    <p>
+      <a href="${resetUrl}">Reset your password</a>
+    </p>
+    <p>This link will expire in 1 hour.</p>
+    <p>If you did not request this, you can safely ignore this email.</p>
+  `,
     });
 
     res.status(200).json({ message: "Reset link sent to email." });
@@ -149,13 +155,11 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-// 2. Reset Password (Verification and Update)
 router.post("/reset-password/:token", async (req, res) => {
   try {
     const { token } = req.params;
     const { password } = req.body;
 
-    // Find user with valid token and check if it's not expired
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
@@ -167,11 +171,9 @@ router.post("/reset-password/:token", async (req, res) => {
         .json({ error: "Token is invalid or has expired." });
     }
 
-    // Encrypt new password using your existing bcrypt logic
     const hashPassword = await bcrypt.hash(password, 10);
     user.password = hashPassword;
 
-    // Clear the reset fields so the token expires immediately
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 

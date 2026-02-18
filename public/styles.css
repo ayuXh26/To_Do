@@ -526,7 +526,6 @@ body::before {
     transform: rotate(15deg) scale(1.15);
 }
 
-/* Loading animation for tasks */
 @keyframes pulse {
     0%, 100% {
         opacity: 1;
@@ -540,12 +539,10 @@ body::before {
     animation: pulse 1.5s ease-in-out infinite;
 }
 
-/* Smooth scroll behavior */
 .task-list-wrapper {
     scroll-behavior: smooth;
 }
 
-/* Focus visible improvements */
 .task-form #task_input:focus-visible {
     outline: 2px solid #4a9eff;
     outline-offset: 2px;
@@ -556,7 +553,6 @@ body::before {
     outline-offset: 2px;
 }
 
-/* Subtle glow effect on main container */
 .main-div::after {
     content: '';
     position: absolute;
@@ -574,7 +570,6 @@ body::before {
     opacity: 1;
 }
 
-/* Content container for better readability on large screens */
 .container-fluid {
     max-width: 1200px;
     margin: 0 auto;
@@ -644,7 +639,6 @@ body::before {
     }
 }
 
-/* Login Page Styles */
 .login-container {
     max-width: 450px;
     width: 100%;
@@ -862,7 +856,6 @@ body::before {
     text-decoration: underline;
 }
 
-/* Signup Modal Styles */
 .signup-modal {
     display: none;
     position: fixed;
@@ -945,7 +938,6 @@ body::before {
     transform: rotate(90deg);
 }
 
-/* Forgot Password Modal Styles */
 .forgot-password-modal {
     display: none;
     position: fixed;

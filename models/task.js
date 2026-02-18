@@ -6,10 +6,6 @@ const taskSchema = mongoose.Schema({
     trim: true,
     required: true,
   },
-  // position : {
-  //     type: Number,
-  //     unique: true
-  // },
   userId: {
     type: String,
   },
